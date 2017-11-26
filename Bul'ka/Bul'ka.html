@@ -1,0 +1,150 @@
+<html> 
+<head> 
+	<title> Kola ##</title> 
+	<meta charset="utf-8"/> 
+	<script src="script.js"></script> 
+	<script src="TGDInput.js"></script>
+</head> 
+<body> 
+	<canvas height="600" width="800" id="example"></canvas> 
+		<script> 
+			//var requestAnimationFrame = requestAnimationFrame || function(func){return setTimeout(function(){func()}, 15)}; 
+			var example = document.getElementById("example"); 
+			ctx = example.getContext ("2d"); 
+
+				function Kola(x,y,r){ 
+					this.x=x||randomaizer(40,example.width-40); 
+					this.y=y||randomaizer(40,example.height-40); 
+					this.radius=r||Math.random()*30+10; 
+					this.strokeStyle="rgba("+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+1+")"; 
+					this.speedX=Math.random()*6-3; 
+					this.speedY=Math.random()*6-3; 
+					this.colorLife=Math.random()*180+300; 
+
+					this.malkol=function(){ 
+					ctx.beginPath(); 
+					ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); 
+					ctx.strokeStyle=this.strokeStyle; 
+					ctx.lineWidth = 6; 
+					ctx.stroke(); 
+				} 
+
+					this.action=function(){ 
+					this.x+=this.speedX; 
+					this.y+=this.speedY; 
+
+				if(this.x<this.radius||this.x>example.width-this.radius) this.speedX*=-1; 
+				if(this.y<this.radius||this.y>example.height-this.radius) this.speedY*=-1; 
+				
+				if(this.colorLife<0) { 
+					this.colorLife=Math.random()*180+300; 
+					this.strokeStyle="rgba("+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.round(Math.random()*255)+","+Math.random()+")"; 
+				} 
+					this.colorLife-=1; 
+
+				} 
+				} 
+
+
+				function Player(x,y,r){ 
+					this.x=x; 
+					this.y=y; 
+					this.radius=r;
+					this.ScoreGive; 
+
+					this.malkol1=function(){ 
+						ctx.beginPath(); 
+						ctx.arc(this.x,this.y,this.radius,0,Math.PI*2); 
+						ctx.fillStyle="#4B54FF"; 
+						ctx.fill(); 
+					} 
+
+					this.ationHero=function(){
+						if(Input.A) this.x -= 30 * deltaTime;
+						if(Input.D) this.x += 30 * deltaTime;
+						if(Input.W) this.y -= 30 * deltaTime;
+						if(Input.S) this.y += 30* deltaTime;
+						
+						if (this.x < this.radius) this.x=this.radius;
+						if (this.x > example.width-this.radius) this.x=example.width-this.radius;
+						if (this.y < this.radius) this.y=this.radius;
+						if (this.y > example.height-this.radius) this.y=example.height-this.radius;
+					}
+
+				} 
+
+
+var death=[]; 
+var score=0; 
+var Timers=10;
+var n=10; 
+var deltaTime;
+var lastFrame;
+var hero= new Player(400,300,20); 
+
+var arr= []; 
+for (i=1;i<=n;i++){ 
+arr[i]= new Kola(); 
+} 
+
+function drawScore() { 
+ctx.font = "16px Arial"; 
+ctx.fillStyle = "#0095DD"; 
+ctx.fillText("Score: "+score, 8, 20); 
+} 
+
+function drawTimers() { 
+ctx.font = "16px Arial"; 
+ctx.fillStyle = "#0095DD"; 
+ctx.fillText("Timer: "+Timers, 725, 20); 
+} 
+
+function update(){ 
+for(i=1; i<=n; i++){
+var Vid=Math.sqrt(Math.pow(arr[i].x-hero.x, 2)+Math.pow(arr[i].y-hero.y, 2)); 
+if (Vid<arr[i].radius+hero.radius){ 
+death[i]=1;
+score++; 
+continue;} 
+arr[i].action(); 
+hero.ationHero(); 
+} 
+} 
+
+function draw(){ 
+example.width=example.width; 
+	for(i=1;i<=n;i++){ 
+	if (death[i]!=1){ 
+	arr[i].malkol(); 
+} 
+} 
+hero.malkol1(); 
+drawScore(); 
+drawTimers();
+ctx.strokeStyle="#3A0000"; 
+ctx.strokeRect(0, 0, 800, 600); } 
+
+lastFrame = Date.now();
+
+function game(){ 
+	deltaTime = (Date.now()-lastFrame)*0.001
+	lastFrame = Date.now()
+update(); 
+draw(); 
+requestAnimationFrame(game);
+} 
+
+var timerId = setInterval(function() {
+  Timers--;
+}, 1*1000);
+
+setTimeout(function() {
+  clearInterval(timerId);
+  alert( 'Game Over' );
+  document.location.reload();
+}, 10*1000);
+
+requestAnimationFrame(game); 
+		</script> 
+	</body> 
+</html>

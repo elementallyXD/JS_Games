@@ -1,0 +1,39 @@
+<html>
+		<head>
+			<title> Equation ax^2+xb+c=0 </title>
+		</head>
+	<body>
+		In A:<input type="edit" id="fielda1"></br>
+		In B:<input type="edit" id="fielda2"></br>
+		In C:<input type="edit" id="fielda3"></br>
+			<input type="button" id="idbutton" value="Click me!" onclick="D()"/></br>
+		
+
+		<script>
+			
+			
+
+				function D(){
+					var a=document.getElementById("fielda1").value;
+					var b=document.getElementById("fielda2").value;
+					var c=document.getElementById("fielda3").value;
+
+					var d = (b*b) - (4*a*c);
+						if (d>0) {
+					var d1= Math.sqrt (d);
+					var x1 = (-b-d1)/(2*a);
+					var x2 = (-b+d1)/(2*a);
+
+					
+					 alert (x1);
+					 alert (x2);} 
+					 	else if (d=0){
+					 var x = -b/(2*a);
+
+					 alert (x);
+					}
+						else alert ("no solutions");
+				}
+		</script>		
+	</body>
+</html>
